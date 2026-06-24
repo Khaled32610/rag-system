@@ -1,67 +1,207 @@
 # 🧠 RAG Document Q&A System
 
-![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.104.1-009688?logo=fastapi&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?logo=docker&logoColor=white)
-![LangChain](https://img.shields.io/badge/LangChain-Integration-green)
+![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python\&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi)
+![LangChain](https://img.shields.io/badge/LangChain-RAG-green)
+![FAISS](https://img.shields.io/badge/FAISS-VectorDB-orange)
+![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?logo=docker)
 
-A production-ready **Retrieval-Augmented Generation (RAG)** system built with FastAPI. This backend API allows users to upload documents (PDF, TXT, DOCX), processes them into vector embeddings, and leverages Groq's blazing-fast Llama-3 model to answer questions based *strictly* on the document's context, eliminating AI hallucination.
+A production-ready Retrieval-Augmented Generation (RAG) system that combines semantic search, vector databases, and Large Language Models (LLMs) to deliver accurate, source-grounded answers from user-provided documents.
 
----
-
-## 🚀 Key Features
-
-* **Intelligent Document Processing:** Instantly parses and chunks large documents.
-* **Semantic Search:** Uses HuggingFace (`all-MiniLM-L6-v2`) and FAISS for highly accurate context retrieval.
-* **Ultra-Fast Inference:** Powered by Groq's `llama-3.3-70b-versatile` model.
-* **Source Tracking:** Returns the exact text snippets used to generate the answer for maximum transparency.
-* **Fully Containerized:** Packaged with Docker for seamless, isolated deployment.
+Built with FastAPI, LangChain, FAISS, and Groq's Llama 3, the system enables intelligent document understanding while minimizing hallucinations through context-aware retrieval.
 
 ---
 
-## 🛠️ Technology Stack
+## 🚀 Features
 
-* **Backend:** FastAPI, Uvicorn, Python
-* **AI & Orchestration:** LangChain, Groq API
-* **Vector Database:** FAISS (Facebook AI Similarity Search)
-* **Embeddings:** Sentence-Transformers (HuggingFace)
-* **DevOps:** Docker
-
----
-
-## ⚙️ Setup Instructions
-
-You can run this project either locally using a Python virtual environment or securely via Docker.
-
-### Prerequisites
-* Python 3.11 or higher (if running locally)
-* Docker Desktop (if running via Docker)
-* A free API key from [Groq](https://console.groq.com/)
+* Upload and process PDF, DOCX, and TXT files
+* Automatic document chunking
+* Semantic search using vector embeddings
+* Retrieval-Augmented Generation (RAG)
+* Groq-powered Llama 3 inference
+* Source-aware responses for transparency
+* FastAPI REST API
+* Dockerized deployment
 
 ---
 
-### Option A: Local Setup (Virtual Environment)
+## 🏗️ How It Works
 
-1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/Khaled32610/rag-system.git](https://github.com/Khaled32610/rag-system.git)
-   cd rag-system
-Create and activate a virtual environment:Bash# On Windows:
-python -m venv venv
-venv\Scripts\activate
+```text
+Document Upload
+      ↓
+Document Parsing
+      ↓
+Text Chunking
+      ↓
+Embeddings Generation
+      ↓
+FAISS Vector Store
+      ↓
+Similarity Search
+      ↓
+Relevant Context Retrieval
+      ↓
+Groq Llama 3
+      ↓
+Answer + Sources
+```
 
-# On macOS/Linux:
-python3 -m venv venv
-source venv/bin/activate
-Install the dependencies:Bashpip install -r requirements.txt
-Set Up Credentials:Create a .env file in the root directory and add your Groq API key:Code snippetGROQ_API_KEY=gsk_your_api_key_here
-Run the FastAPI Server:Bashuvicorn main:app --host 0.0.0.0 --port 8000 --reload
-Option B: Docker SetupThe easiest way to deploy this project in an isolated environment.Clone the repository:Bashgit clone [https://github.com/Khaled32610/rag-system.git](https://github.com/Khaled32610/rag-system.git)
+---
+
+## 🛠️ Tech Stack
+
+| Category         | Technology         |
+| ---------------- | ------------------ |
+| Backend          | FastAPI, Uvicorn   |
+| AI Framework     | LangChain          |
+| LLM              | Groq Llama 3.3 70B |
+| Embeddings       | all-MiniLM-L6-v2   |
+| Vector Database  | FAISS              |
+| Containerization | Docker             |
+| Language         | Python 3.11        |
+
+---
+
+## 📦 Installation
+
+### Clone Repository
+
+```bash
+git clone https://github.com/Khaled32610/rag-system.git
 cd rag-system
-Set Up Credentials:Create a .env file in the root directory and add your Groq API key:Code snippetGROQ_API_KEY=gsk_your_api_key_here
-Build & Run the Container:Bash# Build the Docker image
-docker build -t rag-system .
+```
 
-# Run the container mapping port 8000
+### Create Virtual Environment
+
+```bash
+python -m venv venv
+```
+
+Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+Linux/macOS:
+
+```bash
+source venv/bin/activate
+```
+
+### Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### Configure Environment Variables
+
+Create a `.env` file:
+
+```env
+GROQ_API_KEY=your_api_key_here
+```
+
+### Run Server
+
+```bash
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+---
+
+## 🐳 Docker Deployment
+
+Build the image:
+
+```bash
+docker build -t rag-system .
+```
+
+Run the container:
+
+```bash
 docker run -p 8000:8000 --env-file .env rag-system
-📡 API EndpointsOnce the server is running, visit the interactive Swagger UI at:👉 http://localhost:8000/docsMethodEndpointDescriptionGET/healthChecks if the API is running and healthy.POST/uploadUploads a document, chunks it, and updates the FAISS vector store.POST/askAccepts a JSON payload {"question": "..."} and returns the AI answer with sources.👨‍💻 AuthorKhaled Taha Full-Stack & AI Enthusiast | Building intelligent, containerized solutions.
+```
+
+---
+
+## 📡 API Endpoints
+
+| Method | Endpoint  | Description                            |
+| ------ | --------- | -------------------------------------- |
+| GET    | `/health` | Health check                           |
+| POST   | `/upload` | Upload and index a document            |
+| POST   | `/ask`    | Ask questions about uploaded documents |
+
+---
+
+## 💡 Example Request
+
+```json
+{
+  "question": "What are the key features of the system?"
+}
+```
+
+### Example Response
+
+```json
+{
+  "answer": "The system supports document upload, semantic retrieval, and source-grounded question answering.",
+  "sources": [
+    "Relevant document chunk 1",
+    "Relevant document chunk 2"
+  ]
+}
+```
+
+---
+
+## 📖 API Documentation
+
+After running the server:
+
+```text
+http://localhost:8000/docs
+```
+
+---
+
+## 🎯 Challenges Solved
+
+This project addresses several common challenges in AI-powered question-answering systems:
+
+* **Reducing Hallucinations:** Answers are generated using only the most relevant retrieved document context instead of relying solely on the LLM's internal knowledge.
+* **Efficient Information Retrieval:** FAISS enables fast semantic similarity search even when working with large documents.
+* **Explainable Responses:** The API returns the source chunks used to generate each answer, improving transparency and trust.
+* **Scalable Architecture:** The system is modular and containerized, making deployment and future extensions straightforward.
+* **Production-Ready Workflow:** Combines document ingestion, vector indexing, retrieval, and answer generation into a complete end-to-end pipeline.
+
+### Key Learning Outcomes
+
+Through this project, the following concepts were implemented and explored:
+
+* Retrieval-Augmented Generation (RAG)
+* Vector Databases and Similarity Search
+* Embedding Models and Semantic Retrieval
+* LangChain Orchestration
+* FastAPI Backend Development
+* Docker-Based Deployment
+* LLM Integration using Groq APIs
+
+---
+
+## 🔮 Future Improvements
+
+* Multi-document support
+* Authentication & user management
+* Chat history memory
+* Hybrid Search (BM25 + Vector Search)
+* ChromaDB integration
+* Streaming responses
+* React/Next.js frontend
+
+
